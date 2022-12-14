@@ -1,5 +1,8 @@
-import { ModuleCollection } from '../modules/ModuleCollection'
+import { ModuleCollection } from '../modules/ModuleMethods'
+import '../constants/SelectionOptions'
+import { AModuleLevelOptions, AModulePrefixOptions, ASemesterOptions, AYearOptions } from '../constants/SelectionOptions'
 var moduleCollection = new ModuleCollection()
-moduleCollection.getModuleData()
-console.log(moduleCollection)
-console.log('hello world')
+
+const data = moduleCollection.getModuleSelection(undefined, undefined, AModulePrefixOptions.InterdisciplinaryCourses, AModuleLevelOptions.Level3000)
+// const data = moduleCollection.getAllModuleData()
+console.log(data)
