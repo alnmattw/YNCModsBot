@@ -6,6 +6,5 @@
   },
   "devDependencies": {
     "@types/node": "^18.11.10"
-  },
-  "type": "module"
+  }
 }
