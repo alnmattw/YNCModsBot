@@ -24,13 +24,12 @@ export enum TelegramResponseOptions {
     2. Social Science Courses (YSS) \n
     3. Humanities Courses (YHU) \n
     4. InterdisciplinaryCourses (YID) \n
-    5. Language Courses (YLC) \n
-    6. All Courses \n`,
+    5. Language Courses (YLC) \n`,
   ModuleLevelOptions =
     `Select your module level: \n
-    1. Level 1000 (1K Modules) \n
-    2. Level 2000 (2K Modules) \n
-    3. Level 3000 (3K Modules) \n
-    4. Level 4000 (4K Modules) \n
-    5. All Levels \n`
+    1. 1K Modules (1K) \n
+    2. 2K Module (2K) \n
+    3. 3K Modules (3K) \n
+    4. 4K Modules (4K) \n
+    5. All Modules (All) \n`
 }

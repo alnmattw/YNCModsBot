@@ -1,9 +1,16 @@
 // This class is used to fetch and filter modules from NUSModsAPI
 import fetch from "node-fetch";
-import { ASemesterOptions, AYearOptions, AModuleLevelOptions } from '../constants/SelectionOptions'
+import { ASemesterOptions, AYearOptions, AModuleLevelOptions, AModulePrefixOptions } from '../constants/SelectionOptions'
 import { Module } from './ModuleClass'
 
 const NUSModsAPIURL = 'https://api.nusmods.com/v2/'
+
+export enum ParameterOptions {
+  AcademicYear = 0,
+  AcademicSemester = 1,
+  ModulePrefixCode = 2,
+  ModuleLevel = 3,
+}
 
 export class ModuleCollection {
   // Get all modules from NUSModsAPI
@@ -50,5 +57,37 @@ export class ModuleCollection {
     return values.every(value => {
       return arr.includes(value)
     })
+  }
+  isEnumValue<R extends (string | number), T extends {[key: string] : R}>(myEnum: T, enumValue: string): boolean {
+    return Object.values(myEnum).includes(enumValue as R)
+  }
+  matchEnumValue(myEnum, enumKey: string) {
+    if (this.isEnumKey(myEnum, enumKey)) {
+      return myEnum[enumKey]
+    }
+  }
+  isEnumKey<R extends (string | number), T extends {[key: string] : R}>(myEnum: T, enumKey: string): boolean {
+    return Object.keys(myEnum).includes(enumKey)
+  }
+  // Verify Input from Telegram User 
+  verifyInput (input: string): boolean {
+    const inputArr = input.split(',').map((message) => message.trim())
+    if (inputArr.length !== 4) {
+      return false
+    }
+    const optionAcademicYear: string = inputArr[ParameterOptions.AcademicYear]
+    const optionAcademicSemester: string = inputArr[ParameterOptions.AcademicSemester]
+    const optionModulePrefixCode: string = inputArr[ParameterOptions.ModulePrefixCode]
+    const optionModuleLevel: string = inputArr[ParameterOptions.ModuleLevel]
+
+    const isValidAYear: boolean = this.isEnumKey(AYearOptions, optionAcademicYear)
+    const isValidASemester: boolean = this.isEnumKey(ASemesterOptions, optionAcademicSemester)
+    const isValidModulePrefixCode: boolean = this.isEnumKey(AModulePrefixOptions, optionModulePrefixCode)
+    const isValidModuleLevel: boolean = this.isEnumKey(AModuleLevelOptions, optionModuleLevel)
+    if (isValidAYear && isValidASemester && isValidModulePrefixCode && isValidModuleLevel) {
+      return true
+    } else {
+      return false
+    }
   }
 }

@@ -2,7 +2,10 @@
 import axios from 'axios'
 import 'dotenv/config'
 
-const TELEGRAM_BOT_TOKEN = process.env.BOT_ID
+const { BOT_TOKEN, SERVER_URL } = process.env
+const TELEGRAM_API = `https://api.telegram.org/bot${BOT_TOKEN}`
+const URI = `/webhook/${BOT_TOKEN}`
+const WEBHOOK_URL = SERVER_URL + URI
 
 export enum RequestMethods {
   GET='GET',
@@ -14,7 +17,7 @@ export enum RequestMethods {
 export async function sendTelegramMessage (chatId : string, message : string) {
   const options = {
     method: RequestMethods.POST,
-    url: `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+    url: `${TELEGRAM_API}/sendMessage`,
     data: {
       "chat_id" : chatId,
       "text" : message
@@ -28,4 +31,9 @@ export async function sendTelegramMessage (chatId : string, message : string) {
   .catch((error) => {
     console.error(error)
   })
+}
+
+export async function ClientInit () {
+  const res = await axios.get(`${TELEGRAM_API}/setWebhook?url=${WEBHOOK_URL}`)
+    console.log(res.data)
 }
