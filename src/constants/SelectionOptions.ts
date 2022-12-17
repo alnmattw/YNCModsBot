@@ -15,11 +15,10 @@ export enum AModulePrefixOptions {
   SocialScienceCourses = 'YSS',
   HumanitiesCourses = 'YHU',
   InterdisciplinaryCourses = 'YID',
-  LanguageCourses = 'YLC',  
+  LanguageCourses = 'YLC',
 }
 
 export enum AModuleLevelOptions {
-  All = '', 
   Level1000 = '1',
   Level2000 = '2',
   Level3000 = '3',

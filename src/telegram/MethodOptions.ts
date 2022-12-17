@@ -21,7 +21,7 @@ export async function sendTelegramMessage (chatId : string, message : string) {
       "text" : message
     }
   }
-  axios
+  await axios
   .request(options)
   .then((response) => {
     console.log(response)

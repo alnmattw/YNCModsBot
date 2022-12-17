@@ -1,35 +1,74 @@
+import 'dotenv/config'
 import express from 'express'
+import axios from 'axios'
 import bodyParser from 'body-parser'
 import { sendTelegramMessage } from '../telegram/MethodOptions'
-import '../telegram/CommandOptions'
+import { Introduction, SelectModules } from '../constants/MessageOptions'
+import { ModuleCollection } from '../modules/ModuleMethods'
 
-const bot = express()
-const port = 80
-const TELEGRAM_BOT_TOKEN = process.env.BOT_ID
-const URL = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`
+const { BOT_ID, SERVER_URL } = process.env
+const TELEGRAM_API = `https://api.telegram.org/bot${BOT_ID}`
+const URI = `/webhook/${BOT_ID}`
+const WEBHOOK_URL = SERVER_URL + URI
 
-// Configurations
-bot.use(bodyParser.json());
+const app = express()
+app.use(bodyParser.json())
 
-// Endpoints
-bot.post('/', (req, res) => {
-  const chatId = req.body.message.chat.id
-  const sentMessage = req.body.message.text
-  
-  if (sentMessage == 'hello') {
-    sendTelegramMessage(chatId, 'hello back 👋')
-  } 
-  
- if (sentMessage == 'modules') {
-    sendTelegramMessage(chatId, 'Here is a list of modules: \n\n1. Module 1 \n2. Module 2 \n3. Module 3')
-  }
+const init = async () => {
+    const res = await axios.get(`${TELEGRAM_API}/setWebhook?url=${WEBHOOK_URL}`)
+    console.log(res.data)
+}
 
-  else {
-    res.status(200).send({})
-  }
+app.post(URI, async (req, res) => {
+    console.log(req.body)
+    try {
+      const chatId : string = await req.body.message.chat.id.toString()
+      const text : string = await req.body.message.text.toString()
+
+      switch (text) {
+        case '/start':
+          await sendTelegramMessage(chatId, Introduction)
+          break 
+        case '/select_modules':
+          await sendTelegramMessage(chatId, SelectModules)
+          break
+        case '/summary_modules':
+          await sendTelegramMessage(chatId, Introduction)
+          break
+        case '/academic_year_options':
+          await sendTelegramMessage(chatId, Introduction)
+          break
+        case '/academic_semester_options':
+          await sendTelegramMessage(chatId, Introduction)
+          break
+        case '/module_prefix_options':
+          await sendTelegramMessage(chatId, Introduction)
+          break
+        case '/module_level_options':
+          await sendTelegramMessage(chatId, Introduction)
+          break
+        default:
+          const userMessage : string[] = text.split(',')
+          const optionAcademicYear : string = userMessage[0].trim()
+          const optionModulePrefixCode : string = userMessage[1].trim().toString()
+          const optionModuleLevel : string = userMessage[2].trim()
+          const optionAcademicSemester : number = parseInt(userMessage[3].trim())
+          
+          const moduleCollection = new ModuleCollection()
+          const moduleSelectionSummary = await moduleCollection.getModuleSelectionSummary(optionAcademicYear, optionModulePrefixCode, optionModuleLevel, optionAcademicSemester)
+          const moduleSelectionSummaryMessage = moduleSelectionSummary.join('\n')
+          await sendTelegramMessage(chatId, moduleSelectionSummaryMessage)
+
+      }
+
+      return res.send()
+    }
+    catch (error) {
+      console.log(error)
+    }
 })
 
-// Listening
-bot.listen(port, () => {
-  console.log(`Listening on port ${port}`)
+app.listen(process.env.PORT || 5000, async () => {
+    console.log('🚀 app running on port', process.env.PORT || 5000)
+    await init()
 })
