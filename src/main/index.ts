@@ -55,8 +55,7 @@ bot.post(URI, async (req, res) => {
             telegramMessage = `There are ${moduleSelectionSummary.length} modules available for the following selection: \n\n${moduleSelectionSummaryMessage}`
             await sendTelegramMessage(chatId, telegramMessage)
           } else {
-            telegramMessage = 'Invalid input. Please try again.'
-            await sendTelegramMessage(chatId, telegramMessage)
+            await sendTelegramMessage(chatId, TelegramResponseOptions.InvalidInput)
           } 
           
       }

@@ -31,5 +31,7 @@ export enum TelegramResponseOptions {
     2. 2K Module (2K) \n
     3. 3K Modules (3K) \n
     4. 4K Modules (4K) \n
-    5. All Modules (All) \n`
+    5. All Modules (All) \n`,
+  InvalidInput = 
+  `Invalid input. Please try again.`
 }
