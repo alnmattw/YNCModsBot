@@ -1,7 +1,7 @@
 ### YNCModsBot
 
 ## About 
-Telegram bot to see available list of modules at YNC or NUS. I created this bot to help me with my module planning.
+Telegram bot to see available list of modules at YNC. I created this bot to help me with my module planning.
 
 ## Installation 
 
