@@ -3,7 +3,7 @@ export enum TelegramResponseOptions {
   Start =
     `Welcome to the YNC Modules Bot. I am here to help you gather information about the available modules at YNC.`,
   SelectModules =
-  `NUS by inputting your filter in the following format: 
+  `Select modules by inputting your filter in the following format: 
   AcademicYear, AcademicSemester, ModulePrefix, ModuleLevel
   For example, to see all available MCS modules in AY2022/2023 Semester 2, input: AY2022/2023, Semester 2, YSC, 4K`,
   AcademicYearOptions =
