@@ -21,5 +21,5 @@ ts-node src/main/index.ts
 ```
 
 ## Enjoy
-<img width="766" alt="Screenshot 2022-12-18 at 3 08 01 AM" src="https://user-images.githubusercontent.com/114996150/208259285-811aa33d-2c28-4d65-80f1-b8051722e9fe.png">
+<img width="766" alt="Screenshot 2022-12-18 at 3 12 01 AM" src="https://user-images.githubusercontent.com/114996150/208260258-1e58a0e9-e12e-4a68-ac3c-d88683cd3bb0.png">
 By Alan Matthew
