@@ -3,7 +3,6 @@ import axios from 'axios'
 import 'dotenv/config'
 
 const TELEGRAM_BOT_TOKEN = process.env.BOT_ID
-const TELEGRAM_CHAT_ID = process.env.CHAT_ID 
 
 export enum RequestMethods {
   GET='GET',
@@ -23,10 +22,10 @@ export async function sendTelegramMessage (chatId : string, message : string) {
   }
   await axios
   .request(options)
-  .then((response) => {
-    console.log(response)
+  .then(async () => {
+    console.log('Message sent')
   })
   .catch((error) => {
-    console.log(error)
+    console.error(error)
   })
 }

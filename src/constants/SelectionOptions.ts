@@ -1,3 +1,4 @@
+// This file contains the user's options for filtering modules
 export enum AYearOptions {
   AY21_22 = '2021-2022',
   AY22_23 = '2022-2023',
@@ -8,6 +9,7 @@ export enum AYearOptions {
 export enum ASemesterOptions {
   ASOne = 1,
   ASTwo = 2,
+  ASBoth = -1 // -1 is used to indicate both semesters
 }
 
 export enum AModulePrefixOptions {
@@ -16,6 +18,7 @@ export enum AModulePrefixOptions {
   HumanitiesCourses = 'YHU',
   InterdisciplinaryCourses = 'YID',
   LanguageCourses = 'YLC',
+  AllCourses = '',
 }
 
 export enum AModuleLevelOptions {
@@ -23,4 +26,5 @@ export enum AModuleLevelOptions {
   Level2000 = '2',
   Level3000 = '3',
   Level4000 = '4',
+  AllLevels = '',
 }

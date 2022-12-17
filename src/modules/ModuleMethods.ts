@@ -1,44 +1,54 @@
-// Get from NUSModsAPI
+// This class is used to fetch and filter modules from NUSModsAPI
 import fetch from "node-fetch";
 import { ASemesterOptions, AYearOptions, AModuleLevelOptions } from '../constants/SelectionOptions'
 import { Module } from './ModuleClass'
 
+const NUSModsAPIURL = 'https://api.nusmods.com/v2/'
+
 export class ModuleCollection {
   // Get all modules from NUSModsAPI
-  async getAllModuleData(optionAcademicYear : string = AYearOptions.AY22_23) {
-    const response = await fetch(`https://api.nusmods.com/v2/${optionAcademicYear}/moduleList.json`)
+  async getAllModules(optionAcademicYear: string): Promise<Module[]> {
+    const urlModuleList = '/moduleList.json'
+    const response = await fetch(`${NUSModsAPIURL + optionAcademicYear + urlModuleList}`)
     const data = await response.json() as unknown as any[]
-    const moduleList = data.map((module: any) => {
+    const moduleList: Module[] = data.map((module: any) => {
       return new Module(module)
     })
     return moduleList
   }
   // Select modules from NUSModsAPI
   async getModuleSelection(
-    optionAcademicYear : string = AYearOptions.AY22_23, 
+    optionAcademicYear: string, 
+    optionAcademicSemester: number,
     optionModulePrefixCode: string,
-    optionModuleLevel: string,
-    optionAcademicSemester: number) {
-      const allModules = await this.getAllModuleData(optionAcademicYear)
+    optionModuleLevel: string) {
+      const allModules = await this.getAllModules(optionAcademicYear)
       const moduleSelection = allModules.filter((module: Module) => {
-        return module.ModuleCode.startsWith(optionModulePrefixCode + optionModuleLevel) &&
-         module.Semesters.includes(optionAcademicSemester)
+        if (optionAcademicSemester > 0) {
+          return module.ModuleCode.startsWith(optionModulePrefixCode + optionModuleLevel) && module.Semesters.includes(optionAcademicSemester)
+        } else {
+          return module.ModuleCode.startsWith(optionModulePrefixCode + optionModuleLevel) && this.isArrContainsValues(module.Semesters, [1, 2])
+        }
       })
       return moduleSelection 
   }
   // Get selected modules summary from NUSModsAPI 
-  async getModuleSelectionSummary(
-    optionAcademicYear : string = AYearOptions.AY22_23, 
+  async getModuleSelectionMessage(
+    optionAcademicYear: string, 
+    optionAcademicSemester: number,
     optionModulePrefixCode: string,
-    optionModuleLevel: string,
-    optionAcademicSemester: number
+    optionModuleLevel: string
   ) {
-    const moduleSelection = await this.getModuleSelection(optionAcademicYear, optionModulePrefixCode, optionModuleLevel, optionAcademicSemester)
-    
-    const moduleSelectionSummary = moduleSelection.map((module: Module, index: number) => {
+    const moduleSelection = await this.getModuleSelection(optionAcademicYear, optionAcademicSemester, optionModulePrefixCode, optionModuleLevel)
+    const moduleSelectionMessage = moduleSelection.map((module: Module, index: number) => {
       return `${index + 1}.` + ' ' + module.ModuleCode + ' ' + module.ModuleTitle
     })
-
-    return moduleSelectionSummary
+    return moduleSelectionMessage
+  }
+  // Check if the array contains all the values
+  async isArrContainsValues (arr, values) {
+    return values.every(value => {
+      return arr.includes(value)
+    })
   }
 }
