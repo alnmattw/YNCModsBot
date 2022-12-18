@@ -12,8 +12,7 @@ git clone https://github.com/alnmattw/YNCModsBot.git
 yarn global add typescript ts-node
 yarn 
 
-# install ngrok (if not already installed)
-yarn add ngrok
+# make an ngrok account (if you do not have one already)
 ngrok http 5000
 
 Put your TelegramBotToken and ForwardingUrl into a .env file
